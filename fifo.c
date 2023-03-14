@@ -6,28 +6,44 @@
  * @author (2023) José Ribeiro, 72473 <j.miguel.ribeiro at ua.pt>
 */
 
-#include <stdio.h>//to use printf, scanf, sizeof
+#include <stdio.h>//to use printf, scanf
 #include <stdlib.h>//to use malloc
-#include <stddef.h>//to use sizeof
 #include <errno.h>//to use system error numbers (EPERM, EINVAL, ESRCH, ENOSPC, (...))
 #include <assert.h>//to use asserts
 
 #include "fifo.h"
 
 /**********************************************************/
-void FIFO_init(FIFO* fifo, int size)//initialize the FIFO
+void FIFO_init(FIFO* fifo)//initialize the FIFO
 	{
-	if(!FIFO_checkStatus(fifo))//check the FIFO's status
+	//check the FIFO's status
+	if(!FIFO_checkStatus(fifo))
 		{
 		printf("  Error: FIFO pointer is NULL!!!\n");
-		return;
+		return;//error
 		}
 
-	if(size <= 0)
+	//check the FIFO's initialization
+	if(FIFO_checkInit(fifo) == 1)
 		{
-		printf("  Error: Invalid value! Must be bigger than 0!!!\n");
-		return;
+		printf("  FIFO already initialized!!!\n");
+		return;//error
 		}
+
+	//read the input of the FIFO's size
+	int size, c;
+	do
+		{
+		printf("  FIFO size (>0): ");
+		scanf("%d", &size);//read the input number
+
+		//flushes the stdin
+		while(((c = getchar()) != '\n') && (c != EOF));
+
+		//invalid input size
+		if(size <= 0) printf("  Invalid size!\n");
+		}
+	while(size <= 0);
 
 	fifo->array = (int*)malloc(size * sizeof(int));//memory allocation of the FIFO array
 
@@ -37,29 +53,36 @@ void FIFO_init(FIFO* fifo, int size)//initialize the FIFO
 	fifo->head = 0;//points to the 1st element of the FIFO
 	fifo->tail = 0;//check
 	fifo->priority = 1;//(default) priority of the FIFO
+	printf("  Done!\n");
+
+	//check the FIFO's initialization
+	if(!FIFO_checkInit(fifo)) printf("  Error: FIFO yet to be initialized!!!\n");
+	printf("  Empty: %d\n", FIFO_isEmpty(fifo));//verification
 	}
 /**********************************************************/
 
 /**********************************************************/
 int FIFO_usage(FIFO* fifo)//return the number of elements in the FIFO's array
 	{
-	if(!FIFO_checkStatus(fifo))//check the FIFO's status
+	//check the FIFO's status
+	if(!FIFO_checkStatus(fifo))
 		{
 		printf("  Error: FIFO pointer is NULL!!!\n");
-		return(0);
+		return(0);//error
 		}
 
-	if(!FIFO_checkInit(fifo))//check the FIFO's initialization
+	//check the FIFO's initialization
+	if(FIFO_checkInit(fifo) == 0)
 		{
 		printf("  Error: FIFO yet to be initialized!!!\n");
-		return(0);
+		return(0);//error
 		}
 
 	//if(FIFO_isEmpty(fifo))//check if the FIFO is empty
 	if(fifo->counter == 0)//check if the FIFO is empty
 		{
-		printf("  Error: FIFO empty!!!\n");
-		return(0);
+		printf("  FIFO empty!!!\n");
+		return(0);//error
 		}
 
 	//FIFO's usage
@@ -71,23 +94,25 @@ int FIFO_usage(FIFO* fifo)//return the number of elements in the FIFO's array
 /**********************************************************/
 void FIFO_print(FIFO* fifo)
 	{
-	if(!FIFO_checkStatus(fifo))//check the FIFO's status
+	//check the FIFO's status
+	if(!FIFO_checkStatus(fifo))
 		{
 		printf("  Error: FIFO pointer is NULL!!!\n");
-		return;
+		return;//error
 		}
 
-	if(!FIFO_checkInit(fifo))//check the FIFO's initialization
+	//check the FIFO's initialization
+	if(FIFO_checkInit(fifo) == 0)
 		{
 		printf("  Error: FIFO yet to be initialized!!!\n");
-		return;
+		return;//error
 		}
 
 	//if(FIFO_isEmpty(fifo))//check if the FIFO is empty
 	if(fifo->counter == 0)//check if the FIFO is empty
 		{
-		printf("  Error: FIFO empty!!!\n");
-		return;
+		printf("  FIFO empty!!!\n");
+		return;//error
 		}
 
 	//print the FIFO's array
@@ -103,26 +128,36 @@ void FIFO_print(FIFO* fifo)
 /**********************************************************/
 
 /**********************************************************/
-void FIFO_insert(FIFO* fifo, int value)//insert an element
+void FIFO_insert(FIFO* fifo)//insert an element
 	{
-	if(!FIFO_checkStatus(fifo))//check the FIFO's status
+	//check the FIFO's status
+	if(!FIFO_checkStatus(fifo))
 		{
 		printf("  Error: FIFO pointer is NULL!!!\n");
-		return;
+		return;//error
 		}
 
-	if(!FIFO_checkInit(fifo))//check the FIFO's initialization
+	//check the FIFO's initialization
+	if(FIFO_checkInit(fifo) == 0)
 		{
 		printf("  Error: FIFO yet to be initialized!!!\n");
-		return;
+		return;//error
 		}
 
 	//if(FIFO_isFull(fifo))//check if the FIFO is full
 	if(fifo->counter == fifo->size)//check if the FIFO is full
 		{
 		printf("  Error: FIFO full!!!\n");
-		return;
+		return;//error
 		}
+
+	int value, c;
+	//read the input of the FIFO's size
+	printf("  element: ");
+	scanf("%d", &value);//error -> allowing letters and chars
+
+	//flushes the stdin
+	while(((c = getchar()) != '\n') && (c != EOF));
 
 	//insertion of an element
 	fifo->array[fifo->tail] = value;//insert a new element into FIFO's array
@@ -134,23 +169,25 @@ void FIFO_insert(FIFO* fifo, int value)//insert an element
 /**********************************************************/
 int FIFO_peak(FIFO* fifo)//return the head (oldest) element, without removal
 	{
-	if(!FIFO_checkStatus(fifo))//check the FIFO's status
+	//check the FIFO's status
+	if(!FIFO_checkStatus(fifo))
 		{
 		printf("  Error: FIFO pointer is NULL!!!\n");
-		return(0);
+		return(0);//error
 		}
 
-	if(!FIFO_checkInit(fifo))//check the FIFO's initialization
+	//check the FIFO's initialization
+	if(FIFO_checkInit(fifo) == 0)
 		{
 		printf("  Error: FIFO yet to be initialized!!!\n");
-		return(0);
+		return(0);//error
 		}
 
 	//if(FIFO_isEmpty(fifo))//check if the FIFO is empty
 	if(fifo->counter == 0)//check if the FIFO is empty
 		{
-		printf("  Error: FIFO empty!!!\n");
-		return(0);
+		printf("  FIFO empty!!!\n");
+		return(0);//error
 		}
 
 	//FIFO's head (oldest) element
@@ -162,23 +199,25 @@ int FIFO_peak(FIFO* fifo)//return the head (oldest) element, without removal
 /**********************************************************/
 int FIFO_removeHead(FIFO* fifo)//remove the head (oldest) element
 	{
-	if(!FIFO_checkStatus(fifo))//check the FIFO's status
+	//check the FIFO's status
+	if(!FIFO_checkStatus(fifo))
 		{
 		printf("  Error: FIFO pointer is NULL!!!\n");
-		return(0);
+		return(0);//error
 		}
 
-	if(!FIFO_checkInit(fifo))//check the FIFO's initialization
+	//check the FIFO's initialization
+	if(FIFO_checkInit(fifo) == 0)
 		{
 		printf("  Error: FIFO yet to be initialized!!!\n");
-		return(0);
+		return(0);//error
 		}
 
 	//if(FIFO_isEmpty(fifo))//check if the FIFO is empty
 	if(fifo->counter == 0)//check if the FIFO is empty
 		{
-		printf("  Error: FIFO empty!!!\n");
-		return(0);
+		printf("  FIFO empty!!!\n");
+		return(0);//error
 		}
 
 	//removal of the FIFO's head (oldest) element
@@ -193,22 +232,22 @@ int FIFO_removeHead(FIFO* fifo)//remove the head (oldest) element
 /**********************************************************/
 int FIFO_isFull(FIFO* fifo)//return 1 if full, -1 if error, 0 otherwise
 	{
-	if(!FIFO_checkStatus(fifo))//check the FIFO's status
+	//check the FIFO's status
+	if(!FIFO_checkStatus(fifo))
 		{
 		printf("  Error: FIFO pointer is NULL!!!\n");
-		return(-1);
+		return(-1);//error
 		}
 
-	if(!FIFO_checkInit(fifo))//check the FIFO's initialization
+	//check the FIFO's initialization
+	if(FIFO_checkInit(fifo) == 0)
 		{
 		printf("  Error: FIFO yet to be initialized!!!\n");
-		return(-1);
+		return(-1);//error
 		}
 
-	if(fifo->counter == fifo->size)//check if the FIFO is full
-		{
-		return(1);//full
-		}
+	//check if the FIFO is full
+	if(fifo->counter == fifo->size) return(1);//full
 	return(0);//not full
 	}
 /**********************************************************/
@@ -216,22 +255,22 @@ int FIFO_isFull(FIFO* fifo)//return 1 if full, -1 if error, 0 otherwise
 /**********************************************************/
 int FIFO_isEmpty(FIFO* fifo)//return 1 if empty, -1 if error, 0 otherwise
 	{
-	if(!FIFO_checkStatus(fifo))//check the FIFO's status
+	//check the FIFO's status
+	if(!FIFO_checkStatus(fifo))
 		{
 		printf("  Error: FIFO pointer is NULL!!!\n");
-		return(-1);
+		return(-1);//error
 		}
 
-	if(!FIFO_checkInit(fifo))//check the FIFO's initialization
+	//check the FIFO's initialization
+	if(FIFO_checkInit(fifo) == 0)
 		{
 		printf("  Error: FIFO yet to be initialized!!!\n");
-		return(-1);
+		return(-1);//error
 		}
 
-	if(fifo->counter == 0)//check if the FIFO is empty
-		{
-		return(1);//empty
-		}
+	//check if the FIFO is empty
+	if(fifo->counter == 0) return(1);//empty
 	return(0);//not empty
 	}
 /**********************************************************/
@@ -239,34 +278,21 @@ int FIFO_isEmpty(FIFO* fifo)//return 1 if empty, -1 if error, 0 otherwise
 /**********************************************************/
 int FIFO_checkStatus(FIFO* fifo)//check the FIFO's status
 	{
-	if(fifo == NULL)//check the pointer of the FIFO structure
-		{
-		//printf("  Error: FIFO pointer is NULL!!!\n");
-		return(0);
-		}
-
-	//printf("  FIFO pointer exists!!!\n");
-	return(1);
+	//check the pointer of the FIFO structure
+	if(fifo == NULL) return(0);//error: FIFO pointer is NULL
+	return(1);//FIFO pointer exists
 	}
 /**********************************************************/
 
 /**********************************************************/
 int FIFO_checkInit(FIFO* fifo)
 	{
-	if(!FIFO_checkStatus(fifo))//check the FIFO's status
-		{
-		printf("  Error: FIFO pointer is NULL!!!\n");
-		return(0);
-		}
+	//check the FIFO's status
+	if(!FIFO_checkStatus(fifo)) return(-1);//error: FIFO pointer is NULL
 
-	if(fifo->size <= 0)//check the FIFO's initialization
-		{
-		//printf("  Error: FIFO yet to be initialized!!!\n");
-		return(0);
-		}
-
-	//printf("  FIFO already initialized!!!\n");
-	return(1);
+	//check the FIFO's initialization
+	if(fifo->size <= 0) return(0);//error: FIFO not initialized
+	return(1);//FIFO already initialized
 	}
 /**********************************************************/
 

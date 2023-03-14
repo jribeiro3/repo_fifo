@@ -32,9 +32,8 @@ typedef struct
  * @brief Initializes the FIFO
  *
  * @param fifo Pointer to the FIFO to be initialized
- * @param size Size of the FIFO
 */
-void FIFO_init(FIFO* fifo, int size);
+void FIFO_init(FIFO* fifo);
 /**********************************************************/
 
 /**********************************************************/
@@ -42,7 +41,7 @@ void FIFO_init(FIFO* fifo, int size);
  * @brief Returns the number of elements in the FIFO's array
  * 
  * @param fifo Pointer to the FIFO
- * @return Return number of elements in the FIFO's array, 0 otherwise
+ * @return Return number of elements in the FIFO's array, 0 otherwise (error)
 */
 int FIFO_usage(FIFO* fifo);
 /**********************************************************/
@@ -61,9 +60,8 @@ void FIFO_print(FIFO* fifo);
  * @brief Inserts a new element into the FIFO
  *
  * @param fifo Pointer to the FIFO
- * @param value Item to be inserted
 */
-void FIFO_insert(FIFO* fifo, int value);
+void FIFO_insert(FIFO* fifo);
 /**********************************************************/
 
 /**********************************************************/
@@ -71,7 +69,7 @@ void FIFO_insert(FIFO* fifo, int value);
  * @brief Returns the head (oldest) element of the FIFO, without removal
  *
  * @param fifo Pointer to the FIFO
- * @return The element returned, 0 otherwise (FIFO is empty)
+ * @return The element returned, 0 otherwise (error)
 */
 int FIFO_peak(FIFO* fifo);
 /**********************************************************/
@@ -83,7 +81,7 @@ int FIFO_peak(FIFO* fifo);
  * @details Removes the head (oldest) element
  * 
  * @param fifo Pointer to the FIFO
- * @return The element removed, 0 otherwise (FIFO is empty)
+ * @return The element removed, 0 otherwise (error)
 */
 int FIFO_removeHead(FIFO* fifo);
 /**********************************************************/
@@ -93,7 +91,7 @@ int FIFO_removeHead(FIFO* fifo);
  * @brief Checks if the FIFO is full
  * 
  * @param fifo Pointer to the FIFO
- * @return Return 1 if full, -1 if error, 0 otherwise
+ * @return Return 1 if full, -1 if error, 0 not full
 */
 int FIFO_isFull(FIFO* fifo);
 /**********************************************************/
@@ -103,7 +101,7 @@ int FIFO_isFull(FIFO* fifo);
  * @brief Checks if the FIFO is empty
  * 
  * @param fifo Pointer to the FIFO
- * @return Return 1 if empty, -1 if error, 0 otherwise
+ * @return Return 1 if empty, -1 if error, 0 not empty
 */
 int FIFO_isEmpty(FIFO* fifo);
 /**********************************************************/
@@ -113,7 +111,7 @@ int FIFO_isEmpty(FIFO* fifo);
  * @brief Displays the status of the FIFO
  * 
  * @param fifo Pointer to the FIFO
- * @return Return 1 if OK, 0 otherwise
+ * @return Return 1 if exists, 0 otherwise
 */
 int FIFO_checkStatus(FIFO* fifo);
 /**********************************************************/
@@ -123,7 +121,7 @@ int FIFO_checkStatus(FIFO* fifo);
  * @brief Displays the status of the initialization of the FIFO
  * 
  * @param fifo Pointer to the FIFO
- * @return Return 1 if initialized, 0 otherwise
+ * @return Return 1 if initialized, 0 non-initialized, -1 if does not exist
 */
 int FIFO_checkInit(FIFO* fifo);
 /**********************************************************/
@@ -131,7 +129,7 @@ int FIFO_checkInit(FIFO* fifo);
 /**********************************************************/
 /**
  * @brief Removes the tail (newest) element of the FIFO
- * 
+ * @details not implemented
  * @param fifo Pointer to the FIFO
  * @return The element removed, 0 otherwise (FIFO is empty)
 */
@@ -141,7 +139,7 @@ void FIFO_removeTail(FIFO* fifo);
 /**********************************************************/
 /**
  * @brief Searches for a target element on the FIFO, without removal
- * 
+ * @details not implemented
  * @param fifo Pointer to the FIFO
  * @param [in] target The target element of the FIFO to be found
  * @return Return 1 if found, otherwise 0
