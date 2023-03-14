@@ -14,7 +14,7 @@
 #include "fifo.h"
 
 /**********************************************************/
-void FIFO_init(FIFO* fifo)//initialize the FIFO
+void FIFO_init(FIFO* fifo)
 	{
 	//check the FIFO's status
 	if(!FIFO_checkStatus(fifo))
@@ -41,7 +41,7 @@ void FIFO_init(FIFO* fifo)//initialize the FIFO
 		while(((c = getchar()) != '\n') && (c != EOF));
 
 		//invalid input size
-		if(size <= 0) printf("  Invalid size!\n");
+		if(size <= 0) printf("	Invalid size!\n");
 		}
 	while(size <= 0);
 
@@ -56,13 +56,13 @@ void FIFO_init(FIFO* fifo)//initialize the FIFO
 	printf("  Done!\n");
 
 	//check the FIFO's initialization
-	if(!FIFO_checkInit(fifo)) printf("  Error: FIFO yet to be initialized!!!\n");
+	if(!FIFO_checkInit(fifo)) printf("	Error: FIFO yet to be initialized!!!\n");
 	printf("  Empty: %d\n", FIFO_isEmpty(fifo));//verification
 	}
 /**********************************************************/
 
 /**********************************************************/
-int FIFO_usage(FIFO* fifo)//return the number of elements in the FIFO's array
+int FIFO_usage(FIFO* fifo)
 	{
 	//check the FIFO's status
 	if(!FIFO_checkStatus(fifo))
@@ -87,7 +87,7 @@ int FIFO_usage(FIFO* fifo)//return the number of elements in the FIFO's array
 
 	//FIFO's usage
 	printf("  FIFO's usage: %d/%d\n", fifo->counter, fifo->size);
-	return(fifo->counter);
+	return(fifo->counter);//return the number of elements in the FIFO's array
 	}
 /**********************************************************/
 
@@ -128,7 +128,7 @@ void FIFO_print(FIFO* fifo)
 /**********************************************************/
 
 /**********************************************************/
-void FIFO_insert(FIFO* fifo)//insert an element
+void FIFO_insert(FIFO* fifo)
 	{
 	//check the FIFO's status
 	if(!FIFO_checkStatus(fifo))
@@ -167,7 +167,7 @@ void FIFO_insert(FIFO* fifo)//insert an element
 /**********************************************************/
 
 /**********************************************************/
-int FIFO_peak(FIFO* fifo)//return the head (oldest) element, without removal
+int FIFO_peak(FIFO* fifo)
 	{
 	//check the FIFO's status
 	if(!FIFO_checkStatus(fifo))
@@ -197,7 +197,7 @@ int FIFO_peak(FIFO* fifo)//return the head (oldest) element, without removal
 /**********************************************************/
 
 /**********************************************************/
-int FIFO_removeHead(FIFO* fifo)//remove the head (oldest) element
+int FIFO_removeHead(FIFO* fifo)
 	{
 	//check the FIFO's status
 	if(!FIFO_checkStatus(fifo))
@@ -230,7 +230,7 @@ int FIFO_removeHead(FIFO* fifo)//remove the head (oldest) element
 /**********************************************************/
 
 /**********************************************************/
-int FIFO_isFull(FIFO* fifo)//return 1 if full, -1 if error, 0 otherwise
+int FIFO_isFull(FIFO* fifo)
 	{
 	//check the FIFO's status
 	if(!FIFO_checkStatus(fifo))
@@ -253,7 +253,7 @@ int FIFO_isFull(FIFO* fifo)//return 1 if full, -1 if error, 0 otherwise
 /**********************************************************/
 
 /**********************************************************/
-int FIFO_isEmpty(FIFO* fifo)//return 1 if empty, -1 if error, 0 otherwise
+int FIFO_isEmpty(FIFO* fifo)
 	{
 	//check the FIFO's status
 	if(!FIFO_checkStatus(fifo))
@@ -276,7 +276,7 @@ int FIFO_isEmpty(FIFO* fifo)//return 1 if empty, -1 if error, 0 otherwise
 /**********************************************************/
 
 /**********************************************************/
-int FIFO_checkStatus(FIFO* fifo)//check the FIFO's status
+int FIFO_checkStatus(FIFO* fifo)
 	{
 	//check the pointer of the FIFO structure
 	if(fifo == NULL) return(0);//error: FIFO pointer is NULL
@@ -297,8 +297,9 @@ int FIFO_checkInit(FIFO* fifo)
 /**********************************************************/
 
 /**********************************************************/
-void FIFO_removeTail(FIFO* fifo)//removes the tail (newest) element
+void FIFO_removeTail(FIFO* fifo)
 	{
+	//removes the tail (newest) element
 	}
 /**********************************************************/
 

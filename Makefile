@@ -7,7 +7,7 @@ TARGETS = fifo main
 
 all:	$(TARGETS)
 
-$(TARGETS):	fifo.o main.o 
+$(TARGETS):	fifo.o main.o
 		gcc -o $@ $^ $(LDFLAGS)
 
 $(TARGETS): fifo.h
