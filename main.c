@@ -1,20 +1,88 @@
 
+//******************************************************************************
 /**
  * @file main.c
  * @remarks Note: using Whitesmiths indetation
  * @author (2023) José Ribeiro, 72473 <j.miguel.ribeiro at ua.pt>
 */
+//******************************************************************************
 
-#include <stdio.h>//to use printf, scanf
+#include <stdio.h>//to use printf, scanf, getchar
 #include <stdlib.h>//to use malloc
 #include <errno.h>//to use system error numbers (EPERM, EINVAL, ESRCH, ENOSPC, (...))
-#include <assert.h>//to use asserts
+//#include <assert.h>//to use asserts
 
 #include "fifo.h"
 
-int menuOption, c;//local variables declaration
+//----------------------------------------------------------
+//local variables declaration
+int menuOption, c;
+//----------------------------------------------------------
 
-/**********************************************************/
+//----------------------------------------------------------
+//Functions declaration
+static void printMenu();
+static void readMenuOption();
+//----------------------------------------------------------
+
+//******************************************************************************
+int main()
+	{
+	printMenu();
+	while(1)
+		{
+		//printMenu();
+		readMenuOption();//read the input of the menu option
+
+		switch(menuOption)
+			{
+			//----------------------------------------------
+			case(1)://FIFO initialization
+				printf("  ->FIFO initialization\n");
+				FIFO fifo;//declaration of the FIFO
+				FIFO_init(&fifo);//initialization of the FIFO
+				break;
+			//----------------------------------------------
+			case(2)://print the FIFO's usage
+				printf("  ->FIFO usage\n");
+				FIFO_usage(&fifo);
+				break;
+			//----------------------------------------------
+			case(3)://print the FIFO's array
+				printf("  ->FIFO print\n");
+				FIFO_print(&fifo);
+				break;
+			//----------------------------------------------
+			case(4)://FIFO insert
+				printf("  ->FIFO insert\n");
+				FIFO_insert(&fifo);
+				break;
+			//----------------------------------------------
+			case(5)://FIFO peak
+				printf("  ->FIFO peak\n");
+				FIFO_peak(&fifo);
+				break;
+			//----------------------------------------------
+			case(6)://FIFO remove head
+				printf("  ->FIFO remove\n");
+				FIFO_removeHead(&fifo);
+				break;
+			//----------------------------------------------
+			case(0)://Exit
+				printf("  Exit!!!\n");
+				return(0);
+			//----------------------------------------------
+			default:
+				break;
+			//----------------------------------------------
+			}
+		menuOption = -1;//resets the menuOption
+		}
+	return(0);
+	}
+//******************************************************************************
+
+//------------------------------------------------------------------------------
 static void printMenu()
 	{
 	printf("+===============================================+\n"
@@ -29,9 +97,9 @@ static void printMenu()
 		   "| 0: Quit                                       |\n"
 		   "+===============================================+\n\n");
 	}
-/**********************************************************/
+//------------------------------------------------------------------------------
 
-/**********************************************************/
+//------------------------------------------------------------------------------
 static void readMenuOption()
 	{
 	menuOption = -1;
@@ -48,59 +116,4 @@ static void readMenuOption()
 	while((menuOption < 0) || (menuOption > 6));
 	//printf("Selected: %d\n", menuOption);
 	}
-/**********************************************************/
-
-int main()
-	{
-	printMenu();
-	while(true)
-		{
-		//printMenu();
-		readMenuOption();//read the input of the menu option
-
-		switch(menuOption)
-			{
-			/******************************************************************/
-			case(0)://Exit
-				printf("  Exit!!!\n");
-				return(0);
-			/******************************************************************/
-			case(1)://FIFO initialization
-				printf("  ->FIFO initialization\n");
-				FIFO fifo;//declaration of the FIFO
-				FIFO_init(&fifo);//initialization of the FIFO
-				break;
-			/******************************************************************/
-			case(2)://print the FIFO's usage
-				printf("  ->FIFO usage\n");
-				FIFO_usage(&fifo);
-				break;
-			/******************************************************************/
-			case(3)://print the FIFO's array
-				printf("  ->FIFO print\n");
-				FIFO_print(&fifo);
-				break;
-			/******************************************************************/
-			case(4)://FIFO insert
-				printf("  ->FIFO insert\n");
-				FIFO_insert(&fifo);
-				break;
-			/******************************************************************/
-			case(5)://FIFO peak
-				printf("  ->FIFO peak\n");
-				FIFO_peak(&fifo);
-				break;
-			/******************************************************************/
-			case(6)://FIFO remove head
-				printf("  ->FIFO remove\n");
-				FIFO_removeHead(&fifo);
-				break;
-			/******************************************************************/
-			default:
-				break;
-			/******************************************************************/
-			}
-		menuOption = -1;//resets the menuOption
-		}
-	return(0);
-	}
+//------------------------------------------------------------------------------
